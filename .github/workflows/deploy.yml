@@ -15,8 +15,8 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/custom_key
-          chmod 400 ~/.ssh/custom_key  # 키 파일의 읽기 전용 권한 설정
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519  # 올바른 권한 설정
           ssh-keyscan github.com >> ~/.ssh/known_hosts
         shell: bash
 
@@ -24,10 +24,10 @@ jobs:
         run: |
           git clone git@github.com:seungjae-yu/photo-rating-app.git public
           rm -rf public/*
-          cp -r build/* public/  # Private Repo에서 생성된 빌드 파일 복사
+          cp -r build/* public/
           cd public
           git add .
           git commit -m "Deploy site"
           git push origin gh-pages --force
         env:
-          GIT_SSH_COMMAND: "ssh -i ~/.ssh/custom_key"
+          GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_ed25519"
