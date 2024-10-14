@@ -16,7 +16,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/custom_key
-          chmod 600 ~/.ssh/custom_key
+          chmod 400 ~/.ssh/custom_key  # 키 파일의 읽기 전용 권한 설정
           ssh-keyscan github.com >> ~/.ssh/known_hosts
         shell: bash
 
