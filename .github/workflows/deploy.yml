@@ -8,9 +8,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: yarn install  # React 앱의 의존성 설치
+
+      - name: Build React App
+        run: yarn build  # React 앱 빌드
 
       - name: Setup SSH
         run: |
@@ -23,11 +30,13 @@ jobs:
       - name: Deploy to Public Repo
         run: |
           git clone git@github.com:seungjae-yu/photo-rating-app.git public
-          rm -rf public/*
-          cp -r build/* public/  # Private Repo에서 생성된 빌드 파일 복사
+          rm -rf public/*  # 기존 파일 제거
+          cp -r build/* public/  # 빌드된 파일 복사
           cd public
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
           git add .
           git commit -m "Deploy site"
-          git push origin gh-pages --force
+          git push origin gh-pages --force  # gh-pages 브랜치로 푸시
         env:
           GIT_SSH_COMMAND: "ssh -i ~/.ssh/custom_key"
