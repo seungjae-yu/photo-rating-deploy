@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -21,13 +21,13 @@ jobs:
         shell: bash
 
       - name: Deploy to Public Repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git clone git@github.com:seungjae-yu/photo-rating-app.git public
+          git clone https://github.com/seungjae-yu/photo-rating-app.git public
           rm -rf public/*
           cp -r build/* public/
           cd public
           git add .
           git commit -m "Deploy site"
           git push origin gh-pages --force
-        env:
-          GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_ed25519"
