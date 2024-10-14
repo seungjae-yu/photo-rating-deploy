@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # main 브랜치에 푸시될 때마다 트리거
+      - main  # main 브랜치에 푸시될 때마다 트리거
 
 jobs:
   deploy:
@@ -11,12 +11,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Install Dependencies
-        run: yarn install
-
-      - name: Build Project
-        run: yarn build
 
       - name: Setup SSH
         run: |
@@ -30,7 +24,7 @@ jobs:
         run: |
           git clone git@github.com:seungjae-yu/photo-rating-app.git public
           rm -rf public/*
-          cp -r build/* public/
+          cp -r build/* public/  # Private Repo에서 생성된 빌드 파일 복사
           cd public
           git add .
           git commit -m "Deploy site"
